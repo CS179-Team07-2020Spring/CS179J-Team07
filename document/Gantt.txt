@@ -1,0 +1,50 @@
+HTML part:
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+     <div id="chart_div"></div>
+
+
+
+JS part:
+
+    google.charts.load('current', {'packages':['gantt']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function daysToMilliseconds(days) {
+      return days * 24 * 60 * 60 * 1000;
+    }
+
+    function drawChart() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Task ID');
+      data.addColumn('string', 'Task Name');
+      data.addColumn('date', 'Start Date');
+      data.addColumn('date', 'End Date');
+      data.addColumn('number', 'Duration');
+      data.addColumn('number', 'Percent Complete');
+      data.addColumn('string', 'Dependencies');
+
+      data.addRows([
+        ['Milestone1', 'Assemble the car',
+         new Date(2020, 3, 11), new Date(2020, 3, 21), null,  100,  null],
+        ['Write', 'Deep learning functions',
+         new Date(2020, 3, 21), new Date(2020, 4, 8), null, 0, 'Milestone1'],
+        ['Cite', 'Deep reinforcement learning function',
+         new Date(2020, 3, 21), new Date(2020, 4, 8), null, 0, 'Milestone1'],
+        ['Complete', 'navigation function',
+         new Date(2020, 3, 21), new Date(2020, 4, 8), null, 0, 'Milestone1'],
+        ['Outline1', 'SLAM map generation function',
+         new Date(2020, 3, 21), new Date(2020, 5, 9), null, 0, 'Milestone1'],
+        ['Outline', 'Path planning function',
+         new Date(2020, 3, 21), new Date(2020, 5, 9), null, 0, 'Milestone1'],
+      ]);
+
+      var options = {
+        height: 275
+      };
+
+      var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+    }
