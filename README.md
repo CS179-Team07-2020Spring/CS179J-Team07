@@ -6,7 +6,14 @@ We are proposing a robot-car project based on NVIDIA Jetson Nano, which is a pow
 
 Features that will be implemented:
 
-- Object tracking/following
-- Obstacle avoidance
-- Moving to a specific location
-- Simultaneous Localization and Mapping
+- [x] Basic Motions
+
+- [ ] Object tracking/following
+
+- [ ] Obstacle avoidance
+- [ ] Obstacle avoidance(deep reinforcement learning)
+- [ ] Moving to a specific location
+- [ ] Simultaneous Localization and Mapping
+
+
+
