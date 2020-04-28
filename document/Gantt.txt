@@ -1,13 +1,4 @@
-HTML part:
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-     <div id="chart_div"></div>
-
-
-
-JS part:
-
-    google.charts.load('current', {'packages':['gantt']});
+      google.charts.load('current', {'packages':['gantt']});
     google.charts.setOnLoadCallback(drawChart);
 
     function daysToMilliseconds(days) {
@@ -19,6 +10,7 @@ JS part:
       var data = new google.visualization.DataTable();
       data.addColumn('string', 'Task ID');
       data.addColumn('string', 'Task Name');
+      data.addColumn('string', 'Resource');
       data.addColumn('date', 'Start Date');
       data.addColumn('date', 'End Date');
       data.addColumn('number', 'Duration');
@@ -26,22 +18,38 @@ JS part:
       data.addColumn('string', 'Dependencies');
 
       data.addRows([
-        ['Milestone1', 'Assemble the car',
-         new Date(2020, 3, 11), new Date(2020, 3, 21), null,  100,  null],
-        ['Write', 'Deep learning functions',
-         new Date(2020, 3, 21), new Date(2020, 4, 8), null, 0, 'Milestone1'],
-        ['Cite', 'Deep reinforcement learning function',
-         new Date(2020, 3, 21), new Date(2020, 4, 8), null, 0, 'Milestone1'],
-        ['Complete', 'navigation function',
-         new Date(2020, 3, 21), new Date(2020, 4, 8), null, 0, 'Milestone1'],
-        ['Outline1', 'SLAM map generation function',
-         new Date(2020, 3, 21), new Date(2020, 5, 9), null, 0, 'Milestone1'],
-        ['Outline', 'Path planning function',
-         new Date(2020, 3, 21), new Date(2020, 5, 9), null, 0, 'Milestone1'],
+        ['Research', 'Research RL/DL', null,
+         new Date(2020, 2, 30), new Date(2020, 3, 30), null,  100,  null],
+        ['Remote', 'Remote access', null,
+         new Date(2020, 2, 30), new Date(2020, 3, 22), null,  100,  null],
+        ['Assemble', 'Assemble the car', null,
+         new Date(2020, 2, 30), new Date(2020, 3, 22), null,  100,  null],
+        ['Milestone1', 'Milestone1', null,
+         new Date(2020, 3, 22), new Date(2020, 3, 23), null,  100,  'Assemble'],
+        ['DLF', 'Deep learning functions', 'DL',
+         new Date(2020, 3, 23), null, daysToMilliseconds(3), 25, 'Milestone1'],
+        ['Avoidance', 'Object Avoidance', 'DL',
+         new Date(2020, 3, 27), null, daysToMilliseconds(3), 20, 'DLF'],
+        ['Tracking', 'Object tracking', 'DL',
+         new Date(2020, 4, 1), null, daysToMilliseconds(3), 0, 'Avoidance'],
+        ['DRLF', 'Deep reinforcement learning Function', 'DRL',
+         new Date(2020, 3, 23), null, daysToMilliseconds(10), 100,'Milestone1'],
+        ['Coordinate', 'Coordinate ', null,
+         new Date(2020, 3, 23), null, daysToMilliseconds(10), 100,'Milestone1'],
+        ['SLAM', 'SLAM map generation function ', 'SLAMG',
+         new Date(2020, 3, 23), new Date(2020, 5, 3), null , 100,'Milestone1'],
+        ['Setup', 'Set up OpenVSLAM ', 'SLAMG',
+         new Date(2020, 3, 23), new Date(2020, 3, 27), null , 100,'Milestone1'],
+        ['Testset', 'Test OpenVSLAM ', 'SLAMG',
+         new Date(2020, 3, 27), new Date(2020, 3, 30), null , 100,'Setup'],
+        ['Mapping', 'Tracking and Mapping', 'SLAMG',
+         new Date(2020, 4, 1), new Date(2020, 4, 15), null , 100,'Testset'],
+        ['Localization', 'Localization', 'SLAMG',
+         new Date(2020, 4, 16), new Date(2020, 5, 3), null , 100,'Mapping'],
       ]);
 
       var options = {
-        height: 275
+        height: 775
       };
 
       var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
