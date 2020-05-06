@@ -49,6 +49,7 @@ def turn_no_obj(current_location, target_location, current_angle, target_angle) 
 def turn_obj(distance_to_object, left, right) :
     #contorl the motor
     #return the value use to control the motor for calculation
+    return True
 
 def simple_PL(x,y):     #input a coordinate to travel to, +x = go to right, +y = go straight
 
