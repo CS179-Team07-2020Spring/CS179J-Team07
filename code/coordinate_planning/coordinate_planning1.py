@@ -6,7 +6,7 @@ from time import sleep
     #no_object() : use to return true or false depend is object detect within a range
     #update_info() : use to update the information of the current location, input needed: curr_x, curr_y, curr_angle, maybe the information on how the car going? Output: overwrite current x,y,and angle, output true if it function correctly
     #obj_info(): use to return distance and angle that detect the object. input: nothing. output: distance to the object, the left and right angle of the object
-    #reach_destination(curr_x, x, curr_y, y) : use to deteermine if the robot car reach to the destination. Does not have to be exact but need to be close to a range. Input is current location and target location. Output is Ture if it reach target, else false
+    #reach_destination(curr_x, x, curr_y, y) : use to determine if the robot car reach to the destination. Does not have to be exact but need to be close to a range. Input is current location and target location. Output is Ture if it reach target, else false
     #turn_no_obj() : use to control the trun while no object in camera. input: current location, target location, current angle, target_angle. output: control the motor, return the value use to control the motor
     #turn_obj() : use to control the trun when an object appear. input: distance to object, left and right inform of the object. Output: control the motor, return the value use to control the motor
 
@@ -35,7 +35,11 @@ def update_info(x,y,curr_angle):    #for keep space
     return True
 
 def reach_destination(curr_x, x, curr_y, y):    #for keep space
-    return True
+    distance_apart = math.sqrt((curr_x - x)**2 + (curr_y - y)**2)       #use to calculate the distance from the destination to current lcoation
+    if(distance_apart < 1):
+        return True
+    else:
+        return False
 
 def object_info():      #for keep space
     #return the distance of the object, the left and right most angle that detect  of the object
