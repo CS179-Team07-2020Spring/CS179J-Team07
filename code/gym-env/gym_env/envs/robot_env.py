@@ -2,6 +2,9 @@ import gym
 from gym import error, spaces
 from gym import utils
 from gym.utils import seeding
+from stable_baselines.common.env_checker import check_env
+import numpy as np
+import cv2
 
 class RobotEnv(gym.Env):
     """
@@ -23,18 +26,19 @@ class RobotEnv(gym.Env):
         1 for every step taken without slowing down
 
     Episode Termination:
-        Robot comes to a stop
-        Speed slows down
+        Speed falls under the threshold
 
     """
     metadata = {'render.modes': ['human']}
 
-    @TODO
     def __init__(self):
         super(RobotEnv, self).__init__()
         n_actions = 3
         self.action_space = spaces.Discrete(n_actions)
-        self.observation_space = spaces.Box(0, 255, [height, width, 3])
+        self.observation_space = spaces.Box(0, 255, [224, 224, 3], dtype=np.uint8)
+        self.state = None
+        self.reward = 0
+        self.speed = 0
 
     def step(self, action):
         """
@@ -43,7 +47,22 @@ class RobotEnv(gym.Env):
         :action: TODO
         :returns: next observation, the immediate reward, if episode is done, additional info
         """
-        return observation, reward, done, info
+        if action is not None:
+            # turn left
+            # go straight
+            # turn right
+            pass
+
+        s = self.state
+        reward = 1 if speed > speed_threshold else 0
+        done = bool(speed < self.speed_threshold)
+
+        # get next frame
+        np_imageData = np.asarray('frame.jpg')
+
+        info = {} # not required
+
+        return np_imageData.astype(np.uint8), reward, done, info
 
     def reset(self):
         """ 
@@ -52,8 +71,11 @@ class RobotEnv(gym.Env):
         
         :returns: observation
         """
-        return observation
+        self.reward = 0
 
+        # reset to current frame
+        np_imageData =  np.asarray('frame.jpg')
+        return np_imageData.astype(np.uint8)
 
     def render(self, mode='human'):
         """
@@ -62,12 +84,15 @@ class RobotEnv(gym.Env):
         :mode: TODO
         :returns: TODO
         """
-        pass
-
 
     def close(self):
         """TODO: Docstring for close.
 
         :returns: TODO
         """
-        pass
+        if self.viewer:
+            self.viewer.close()
+            self.viewer = None
+
+env = RobotEnv()
+check_env(env, warn=True)
