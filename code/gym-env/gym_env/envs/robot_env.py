@@ -5,6 +5,8 @@ from gym.utils import seeding
 from stable_baselines.common.env_checker import check_env
 import numpy as np
 import cv2
+from PIL import Image
+
 
 class RobotEnv(gym.Env):
     """
@@ -39,6 +41,7 @@ class RobotEnv(gym.Env):
         self.state = None
         self.reward = 0
         self.speed = 0
+        self.speed_threshold = 10
 
     def step(self, action):
         """
@@ -54,15 +57,18 @@ class RobotEnv(gym.Env):
             pass
 
         s = self.state
-        reward = 1 if speed > speed_threshold else 0
-        done = bool(speed < self.speed_threshold)
+        reward = 1 if self.speed > self.speed_threshold else 0
+        done = bool(self.speed < self.speed_threshold)
 
         # get next frame
-        np_imageData = np.asarray('frame.jpg')
+        # np_imageData = np.asarray('frame.jpg')
 
         info = {} # not required
 
-        return np_imageData.astype(np.uint8), reward, done, info
+        image = Image.open('image1.png')
+        data = np.asarray(image)
+
+        return data.astype(np.uint8), reward, done, info
 
     def reset(self):
         """ 
@@ -74,8 +80,11 @@ class RobotEnv(gym.Env):
         self.reward = 0
 
         # reset to current frame
-        np_imageData =  np.asarray('frame.jpg')
-        return np_imageData.astype(np.uint8)
+        # np_imageData =  np.asarray('image1.png')
+        image = Image.open('image1.png')
+        # print(image.size)
+        data = np.asarray(image)
+        return data.astype(np.uint8)
 
     def render(self, mode='human'):
         """
