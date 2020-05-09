@@ -30,3 +30,10 @@ def calibration_spin(robot, speed = 0.5):
     start_time = time.time()
     number_loop = input("Please enter the number you want the car spin and wait for the car spin that amount of time and press enter: ")
     return (time.time() - start_time)/int(number_loop)
+
+def calibration_turn(robot, leftspeed = 0.4, rightspeed = 0.6):
+    input("Press enter to start the robot from turning, it will be using speed of 0.4 and 0.6 for left and right motor to turn")
+    robot.set_motors(leftspeed, rightspeed)
+    start_time = time.time()
+    number_turn = input("Please enter the number you want the car turn and wait for the car to turn that amount of time and press enter: ")
+    return (time.time() - start_time)/int(number_turn)
