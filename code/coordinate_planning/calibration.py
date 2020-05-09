@@ -17,6 +17,8 @@ def calibration(camera, speed, robot, distance):     #require to have preprocess
 
         if prob_not_end < 0.5:
             count_false = count_false + 1
+
+        time.sleep(0.01)            #wait slightly before obtaining another sample data
     total_time = time.time() - start_time           #calculate the total time it run
     robot.stop()        #to stop the robot to indicate it has done the calibration
     return distance / total_time       #return how much it travel per sec
