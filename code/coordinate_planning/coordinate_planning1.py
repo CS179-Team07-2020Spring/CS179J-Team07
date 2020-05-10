@@ -30,10 +30,14 @@ def convert_angle(x,y):
         else:       #case for -180 to -90 degree
             return math.degrees(math.atan(temp)) - 180
 
-def no_object():    #can build a machine learning model to detect is an object in front
-    return True
+# def no_object():    #can build a machine learning model to detect is an object in front
+#     return True
 
 def update_info_straight(x,y,curr_angle, time):    #for keep space
+    speed = 1       #currently defalut 1, can use calibration to change that
+    x = x + math.sin(math.radians(curr_angle)) * time * speed
+    y = y + math.cos(math.radians(curr_angle)) * time * speed
+
     return True
 
 def reach_destination(curr_x, x, curr_y, y):  
