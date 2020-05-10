@@ -118,3 +118,16 @@ class RobotEnv(gym.Env):
 
 env = RobotEnv()
 check_env(env, warn=True)
+
+print(env.observation_space)
+print(env.action_space)
+print(env.action_space.sample())
+
+n_steps = 20
+for step in range(n_steps):
+    print("Step {}".format(step+1))
+    obs, reward, done, info = env.step(0)
+    print('obs=', obs, 'reward=', reward, 'done=', done)
+    if done:
+        print('reward=', reward)
+        break
