@@ -31,7 +31,11 @@ class RobotEnv(gym.Env):
         Speed falls under the threshold
 
     """
-    metadata = {'render.modes': ['human']}
+    # metadata = {'render.modes': ['human']}
+
+    STRAIGHT = 0
+    LEFT = 1
+    RIGHT = 2
 
     def __init__(self):
         super(RobotEnv, self).__init__()
@@ -50,11 +54,18 @@ class RobotEnv(gym.Env):
         :action: TODO
         :returns: next observation, the immediate reward, if episode is done, additional info
         """
-        if action is not None:
-            # turn left
-            # go straight
-            # turn right
+
+        if action == self.LEFT:
+            # move left
             pass
+        elif action == self.RIGHT:
+            # move right
+            pass
+        elif action == self.STRAIGHT:
+            # move straight
+            pass
+        else:
+            raise ValueError("Received invalid action={} that is not part of the action space".format(action))
 
         s = self.state
         reward = 1 if self.speed > self.speed_threshold else 0
@@ -78,11 +89,10 @@ class RobotEnv(gym.Env):
         :returns: observation
         """
         self.reward = 0
+        self.speed = 0
 
         # reset to current frame
-        # np_imageData =  np.asarray('image1.png')
         image = Image.open('image1.png')
-        # print(image.size)
         data = np.asarray(image)
         return data.astype(np.uint8)
 
@@ -93,6 +103,8 @@ class RobotEnv(gym.Env):
         :mode: TODO
         :returns: TODO
         """
+        # for visualization shouldn't be required
+        pass
 
     def close(self):
         """TODO: Docstring for close.
@@ -102,6 +114,7 @@ class RobotEnv(gym.Env):
         if self.viewer:
             self.viewer.close()
             self.viewer = None
+        pass
 
 env = RobotEnv()
 check_env(env, warn=True)
