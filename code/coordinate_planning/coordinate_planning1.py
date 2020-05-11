@@ -98,8 +98,11 @@ def simple_PL(x,y, straight_distance, spin_time, turn_time):     #input a coordi
     #need to care about two case, if there is no object case and if there is object in front case
     while(not reach_destination(curr_x, x, curr_y, y)):
 
+        prob_left = 0       #need to use a function to read from the model
+        prob_right = 0
+
         #if no object
-        if(no_object()):     #use to check is there object in front
+        if(prob_left <0.5 and prob_right < 0.5):     #use to check is there object in front
             target_angle = convert_angle(x - curr_x, y - curr_y)
             angle_different = curr_angle - target_angle
 
@@ -122,9 +125,8 @@ def simple_PL(x,y, straight_distance, spin_time, turn_time):     #input a coordi
                 update_info_straight(curr_x,curr_y,curr_angle, 0.1)
         
         #if there is object detected
-        if(not no_object()):    #sense object in front
-            prob_left = 0       #need to use a function to read from the model
-            prob_right = 0
+        else:    #sense object in front
+            
 
             #case one, left angle is smaller than right angle, so turn left to avoid the object
             if(prob_left > 0.5):    #thinking to use machine learning model to determine do the car need to turn left
