@@ -4,7 +4,7 @@ HTML part:
 
 
 JS part:
-    google.charts.load('current', {'packages':['gantt']});
+    		google.charts.load('current', {'packages':['gantt']});
     google.charts.setOnLoadCallback(drawChart);
 
     function daysToMilliseconds(days) {
