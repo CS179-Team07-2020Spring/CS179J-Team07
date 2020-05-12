@@ -134,7 +134,7 @@ def simple_PL(x,y, straight_distance, spin_time, turn_time):     #input a coordi
                     spin_left()
                     #prob_left = #need update
                     sleep(0.1)
-                    curr_angle = check_angle(curr_angle - (time_to_turn/0.1) * 360)  #make sure the angle is between -180 to 180 degree
+                    curr_angle = check_angle(curr_angle - (spin_time/0.1) * 360)  #make sure the angle is between -180 to 180 degree
                 
                 straight()
                 sleep(0.5)
@@ -148,7 +148,7 @@ def simple_PL(x,y, straight_distance, spin_time, turn_time):     #input a coordi
                     spin_right()
                     #prob_right = #update
                     sleep(0.1)
-                    curr_angle = check_angle(curr_angle + (time_to_turn/0.1) * 360)  #make sure the angle is between -180 to 180 degree
+                    curr_angle = check_angle(curr_angle + (spin_time/0.1) * 360)  #make sure the angle is between -180 to 180 degree
                 
                 straight()
                 sleep(0.5)
