@@ -40,8 +40,6 @@ JS part:
          new Date(2020, 3, 27), new Date(2020, 3, 30),null, 20, 'data1'],
         ['Avoidance', 'Object Avoidance', 'DL',
          new Date(2020, 3, 30), new Date(2020, 4, 2),null, 20, 'train1'],
-        ['Tracking', 'Object tracking', 'DL',
-         new Date(2020, 4, 3), new Date(2020, 4, 6), null, 0, 'Avoidance'],
         ['DRLF', 'Deep reinforcement learning Function', 'DRL',
          new Date(2020, 3, 23), new Date(2020, 4, 28), null, 100,'Milestone1'],
         ['DRLF0', 'Set up gym environment', 'DRL',
