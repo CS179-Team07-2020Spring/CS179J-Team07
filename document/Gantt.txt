@@ -5,7 +5,7 @@ HTML part:
 
 JS part:
 
-      google.charts.load('current', {'packages':['gantt']});
+ 		google.charts.load('current', {'packages':['gantt']});
     google.charts.setOnLoadCallback(drawChart);
 
     function daysToMilliseconds(days) {
@@ -41,18 +41,16 @@ JS part:
          new Date(2020, 3, 27), new Date(2020, 3, 30),null, 20, 'data1'],
         ['Avoidance', 'Object Avoidance', 'DL',
          new Date(2020, 3, 30), new Date(2020, 4, 2),null, 20, 'train1'],
-        ['Tracking', 'Object tracking', 'DL',
-         new Date(2020, 4, 3), new Date(2020, 4, 6), null, 0, 'Avoidance'],
         ['DRLF', 'Deep reinforcement learning Function', 'DRL',
-         new Date(2020, 3, 23), new Date(2020, 4, 13), null, 100,'Milestone1'],
+         new Date(2020, 3, 23), new Date(2020, 4, 28), null, 100,'Milestone1'],
         ['DRLF0', 'Set up gym environment', 'DRL',
-         new Date(2020, 3, 23), new Date(2020, 3, 25), null, 100,'Milestone1'],       
+         new Date(2020, 3, 23), new Date(2020, 4, 8), null, 100,'Milestone1'],       
         ['DRLF1', 'Implement Policy Gradient for DRL', 'DRL',
-         new Date(2020, 3, 26), new Date(2020, 4, 1), null, 100,'DRLF0'],
+         new Date(2020, 4, 8), new Date(2020, 4, 11), null, 100,'DRLF0'],
          ['DRLF2', 'Implement Actor-Critic for DRL', 'DRL',
-         new Date(2020, 4, 1), new Date(2020, 4, 6), null, 100,'DRLF1'],
+         new Date(2020, 4, 11), new Date(2020, 4, 19), null, 100,'DRLF1'],
          ['DRLF3', 'Implement more advanced algorithm for DRL', 'DRL',
-         new Date(2020, 4, 7), new Date(2020, 4, 13), null, 100,'DRLF2'],
+         new Date(2020, 4, 19), new Date(2020, 4, 28), null, 100,'DRLF2'],
         ['Coordinate', 'Coordinate ', null,
          new Date(2020, 3, 23), new Date(2020, 4, 13), null, 100,'Milestone1'],
         ['Milestone2', 'Milestone2', null,
@@ -78,7 +76,8 @@ JS part:
       ]);
 
       var options = {
-        height: 1075
+        height: 1200,
+        width: 1200
       };
 
       var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
