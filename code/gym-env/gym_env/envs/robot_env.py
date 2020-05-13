@@ -6,6 +6,7 @@ from stable_baselines.common.env_checker import check_env
 import numpy as np
 import cv2
 from PIL import Image
+import random
 
 
 class RobotEnv(gym.Env):
@@ -44,8 +45,9 @@ class RobotEnv(gym.Env):
         self.observation_space = spaces.Box(0, 255, [224, 224, 3], dtype=np.uint8)
         self.state = None
         self.reward = 0
-        self.speed = 0
+        self.speed = 20
         self.speed_threshold = 10
+        self.image = None
 
     def step(self, action):
         """
@@ -55,29 +57,32 @@ class RobotEnv(gym.Env):
         :returns: next observation, the immediate reward, if episode is done, additional info
         """
 
-        if action == self.LEFT:
-            # move left
-            pass
-        elif action == self.RIGHT:
-            # move right
-            pass
+        # image = Image.open('nonobstacle.png')
+        if action == self.LEFT or action == self.RIGHT:
+            if self.image.filename == 'obstacle.png':
+                self.image = Image.open('nonobstacle.png')
+        # elif action == self.RIGHT:
+            # if self.image.filename == 'obstacle.png':
+                # self.image = Image.open('nonobstacle.png')
         elif action == self.STRAIGHT:
-            # move straight
-            pass
+            if self.image.filename == 'obstacle.png':
+                self.speed -= 2
+            else:
+                rand = random.randint(1, 2)
+                if rand == 1:
+                    self.image = Image.open('nonobstacle.png')
+                else:
+                    self.image = Image.open('obstacle.png')
         else:
             raise ValueError("Received invalid action={} that is not part of the action space".format(action))
 
         s = self.state
-        reward = 1 if self.speed > self.speed_threshold else 0
+        reward = 1 if self.image.filename == 'nonobstacle.png' else 0
         done = bool(self.speed < self.speed_threshold)
 
-        # get next frame
-        # np_imageData = np.asarray('frame.jpg')
+        info = {self.image.filename:self.speed} # not required
 
-        info = {} # not required
-
-        image = Image.open('image1.png')
-        data = np.asarray(image)
+        data = np.asarray(self.image)
 
         return data.astype(np.uint8), reward, done, info
 
@@ -89,11 +94,11 @@ class RobotEnv(gym.Env):
         :returns: observation
         """
         self.reward = 0
-        self.speed = 0
+        self.speed = 20
 
         # reset to current frame
-        image = Image.open('image1.png')
-        data = np.asarray(image)
+        self.image = Image.open('nonobstacle.png')
+        data = np.asarray(self.image)
         return data.astype(np.uint8)
 
     def render(self, mode='human'):
@@ -123,11 +128,11 @@ print(env.observation_space)
 print(env.action_space)
 print(env.action_space.sample())
 
-n_steps = 20
-for step in range(n_steps):
-    print("Step {}".format(step+1))
-    obs, reward, done, info = env.step(0)
-    print('obs=', obs, 'reward=', reward, 'done=', done)
-    if done:
-        print('reward=', reward)
-        break
+# n_steps = 20
+# for step in range(n_steps):
+    # print("Step {}".format(step+1))
+    # obs, reward, done, info = env.step(0)
+    # print('obs=', obs, 'reward=', reward, 'done=', done)
+    # if done:
+        # print('reward=', reward)
+        # break
