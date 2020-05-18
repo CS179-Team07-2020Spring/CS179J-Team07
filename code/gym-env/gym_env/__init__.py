@@ -1,7 +1,4 @@
-import logging
-import gym.envs.registration import register
-
-logger = logging.getLogger(__name__)
+from gym.envs.registration import register
 
 register(
         id='Robot-v0',
