@@ -4,7 +4,7 @@
 cd /path/to/working/dir
 git clone https://github.com/shinsumicco/DBoW2.git
 cd DBoW2
-rmkdir build && cd build
+mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ..
 make -j4
 make install
