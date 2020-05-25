@@ -2,4 +2,4 @@ language: python
 python:
   - "3.6"
 script:
-  - python code/coordinate_planning/testing.py
+  - python src/coordinate_planning/testing.py
