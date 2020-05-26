@@ -32,7 +32,6 @@ class RobotEnv(gym.Env):
         Speed falls under the threshold
 
     """
-    # metadata = {'render.modes': ['human']}
 
     STRAIGHT = 0
     LEFT = 1
@@ -57,16 +56,17 @@ class RobotEnv(gym.Env):
         :returns: next observation, the immediate reward, if episode is done, additional info
         """
 
-        # image = Image.open('nonobstacle.png')
+        # when there's an obstacle and robot turns left/right
+        # frame should have no more obstacles
         if action == self.LEFT or action == self.RIGHT:
             if self.image.filename == 'obstacle.png':
                 self.image = Image.open('nonobstacle.png')
-        # elif action == self.RIGHT:
-            # if self.image.filename == 'obstacle.png':
-                # self.image = Image.open('nonobstacle.png')
+
+        # case1: obstacle in front, robot collides; stops moving
+        # case2: no obstacle in front, there is a chance that an obstacle will or will not appear
         elif action == self.STRAIGHT:
             if self.image.filename == 'obstacle.png':
-                self.speed -= 2
+                self.speed = 0
             else:
                 rand = random.randint(1, 2)
                 if rand == 1:
@@ -77,8 +77,12 @@ class RobotEnv(gym.Env):
             raise ValueError("Received invalid action={} that is not part of the action space".format(action))
 
         s = self.state
-        reward = 1 if self.image.filename == 'nonobstacle.png' else 0
         done = bool(self.speed < self.speed_threshold)
+
+        if not done:
+            reward = 1.0
+        else:
+            reward = 0.0
 
         info = {self.image.filename:self.speed} # not required
 
