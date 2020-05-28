@@ -1,4 +1,8 @@
+[![Build Status](https://travis-ci.org/CS179-Team07-2020Spring/CS179J-Team07.svg?branch=master)](https://travis-ci.org/CS179-Team07-2020Spring/CS179J-Team07)
+
 # CS179J-Team07
+
+
 
 This project is to program a Jetson Nano to have the ability to generate a map using SLAM while traveling and able to use the map that generated to perform path planning. 
 
