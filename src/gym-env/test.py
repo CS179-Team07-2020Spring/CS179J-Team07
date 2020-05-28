@@ -8,7 +8,9 @@ from stable_baselines import A2C, PPO2
 def train_new():
     # train from the beginning
     env = make_vec_env('Robot-v0', n_envs=1)
-    model = PPO2(MlpPolicy, env, verbose=1)
+    # n_steps default = 128
+    # halving to address resource exhausted error
+    model = PPO2(MlpPolicy, env, n_steps=64, verbose=1)
     model.learn(total_timesteps=1000)
     obs = env.reset()
     while True:
