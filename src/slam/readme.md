@@ -39,14 +39,32 @@ docker pull seyeonk/openvslam-server
 ### On Linux
 First, launch the server container and open it on http://localhost:3001/
 ```bash
-docker run --rm -it --name openvslam-server --net=host openvslam-server
+docker run --rm -it --name openvslam-server --net=host seyeonk/openvslam-socket
 ```
 Then launch the OpenVSLAM container:
 ```bash
+docker run --rm -it --name openvslam-socket --net=host seyeonk/openvslam-socket
+```
+
+
+
+if you just run
+
+```
 docker run --rm -it --name openvslam-socket --net=host openvslam-socket
 ```
 
+It will give the error message
+
+```
+Unable to find image 'openvslam-server:latest' locally
+docker: Error response from daemon: pull access denied for openvslam-server, repository does not exist or may require 'docker login'.
+```
+
+
+
 ### On MacOS
+
 First, launch the server container and open it on http://localhost:3001/
 ```bash
 docker run --rm -it --name openvslam-server -p 3001:3001 openvslam-server
