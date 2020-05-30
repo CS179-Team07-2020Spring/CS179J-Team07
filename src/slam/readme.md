@@ -39,7 +39,7 @@ docker pull seyeonk/openvslam-server
 ### On Linux
 First, launch the server container and open it on http://localhost:3001/
 ```bash
-docker run --rm -it --name openvslam-server --net=host seyeonk/openvslam-socket
+docker run --rm -it --name openvslam-server --net=host seyeonk/openvslam-server
 ```
 Then launch the OpenVSLAM container:
 ```bash
