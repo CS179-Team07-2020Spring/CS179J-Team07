@@ -9,6 +9,8 @@ from PIL import Image
 import random
 from skimage.measure import compare_ssim
 import imutils
+from jetbot import Robot
+
 
 
 class RobotEnv(gym.Env):
@@ -37,11 +39,12 @@ class RobotEnv(gym.Env):
 
     STRAIGHT = 0
     LEFT = 1
-    RIGHT = 2
+    #RIGHT = 2
 
     def __init__(self):
         super(RobotEnv, self).__init__()
-        n_actions = 3
+        #n_actions = 3
+        n_actions = 2
         self.action_space = spaces.Discrete(n_actions)
         self.observation_space = spaces.Box(0, 255, [224, 224, 3], dtype=np.uint8)
         self.state = None
@@ -50,6 +53,7 @@ class RobotEnv(gym.Env):
         self.speed_threshold = 10
         self.image = None
         self.prev_image = None
+        self.robot = Robot()
 
     def step(self, action):
         """
@@ -60,15 +64,17 @@ class RobotEnv(gym.Env):
         """
 
         if action == self.LEFT:
-            robot.left()
+            self.robot.left()
             # take current frame 
             # self.image = image
+        '''
         if action == self.RIGHT:
-            robot.right()
+            self.robot.right()
             # take current frame
             # self.image = image
+        '''
         elif action == self.STRAIGHT:
-            robot.straight()
+            self.robot.straight()
             # take current frame
             # self.image = image
         else:
