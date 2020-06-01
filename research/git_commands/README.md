@@ -54,3 +54,12 @@ git branch -d <BranchName>
 
 
 if I use checkout a branch, the files under the folder will change
+
+5
+
+push the local branch ecui001/ssim_index(before the colon) to the remote branch ecui001/ssim_index(after the colon). origin is the remote name
+
+```
+git push origin ecui001/ssim_index:ecui001/ssim_index
+```
+
