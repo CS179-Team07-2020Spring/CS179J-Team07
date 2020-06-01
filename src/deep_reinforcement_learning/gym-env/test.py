@@ -10,7 +10,7 @@ def train_new():
     env = make_vec_env('Robot-v0', n_envs=1)
     # n_steps default = 128
     # halving to address resource exhausted error
-    model = PPO2(MlpPolicy, env, n_steps=64, verbose=1)
+    model = PPO2(CnnPolicy, env, n_steps=64, verbose=1)
     model.learn(total_timesteps=1000)
     obs = env.reset()
     while True:
