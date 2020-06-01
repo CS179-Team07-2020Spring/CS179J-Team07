@@ -7,6 +7,8 @@ import numpy as np
 import cv2
 from PIL import Image
 import random
+from skimage.measure import compare_ssim
+import imutils
 
 
 class RobotEnv(gym.Env):
@@ -47,6 +49,7 @@ class RobotEnv(gym.Env):
         self.speed = 20
         self.speed_threshold = 10
         self.image = None
+        self.prev_image = None
 
     def step(self, action):
         """
@@ -56,28 +59,29 @@ class RobotEnv(gym.Env):
         :returns: next observation, the immediate reward, if episode is done, additional info
         """
 
-        # when there's an obstacle and robot turns left/right
-        # frame should have no more obstacles
-        if action == self.LEFT or action == self.RIGHT:
-            if self.image.filename == 'obstacle.png':
-                self.image = Image.open('nonobstacle.png')
-
-        # case1: obstacle in front, robot collides; stops moving
-        # case2: no obstacle in front, there is a chance that an obstacle will or will not appear
+        if action == self.LEFT:
+            robot.left()
+            # take current frame 
+            # self.image = image
+        if action == self.RIGHT:
+            robot.right()
+            # take current frame
+            # self.image = image
         elif action == self.STRAIGHT:
-            if self.image.filename == 'obstacle.png':
-                self.speed = 0
-            else:
-                rand = random.randint(1, 2)
-                if rand == 1:
-                    self.image = Image.open('nonobstacle.png')
-                else:
-                    self.image = Image.open('obstacle.png')
+            robot.straight()
+            # take current frame
+            # self.image = image
         else:
             raise ValueError("Received invalid action={} that is not part of the action space".format(action))
 
+        grayA = cv2.cvtColor(self.prev_image, cv2.COLOR_BGR2GRAY)
+        grayB = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+
+        (score, diff) = compare_ssim(grayA, grayB, full=True)
+
         s = self.state
-        done = bool(self.speed < self.speed_threshold)
+        # done = bool(self.speed < self.speed_threshold)
+        done = bool(score > 1-epsilon && score < 1+epsilon)
 
         if not done:
             reward = 1.0
@@ -87,6 +91,7 @@ class RobotEnv(gym.Env):
         info = {self.image.filename:self.speed} # not required
 
         data = np.asarray(self.image)
+        self.prev_image = self.image
 
         return data.astype(np.uint8), reward, done, info
 
