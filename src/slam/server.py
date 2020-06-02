@@ -1,15 +1,16 @@
-import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
 import socket
-server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-server.bind(('localhost',9090)) # bind the port to listen
-server.listen(5) #start listening
-while True:
-    conn,addr = server.accept() 
-    print(conn,addr)
-    while True:
-        data = conn.recv(1024)  # recieve data
-        print('recive:',data.decode()) #
-        conn.send(data.upper()) # send data
-    conn.close()
+
+HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
+PORT = 65432        # Port to listen on (non-privileged ports are > 1023)
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.bind((HOST, PORT))
+    s.listen()
+    conn, addr = s.accept()
+    with conn:
+        print('Connected by', addr)
+        while True:
+            data = conn.recv(1024)
+            if not data:
+                break
+            conn.sendall(data)
