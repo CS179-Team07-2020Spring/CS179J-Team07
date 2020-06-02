@@ -42,3 +42,18 @@ def update(change):
     time.sleep(0.001)
         
 update({'new': camera.value})  # we call the function once to intialize
+
+
+def imagesToVideo(path):
+	img_array = []
+	filename_arary = []
+	for filename in filename_arary:
+		img = cv2.imread(filename)
+		height, width, layers = img.shape
+		size = (width,height)
+		img_array.append(img)
+
+	out = cv2.VideoWriter('project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
+	for i in range(len(img_array)):
+    	out.write(img_array[i])
+	out.release()
