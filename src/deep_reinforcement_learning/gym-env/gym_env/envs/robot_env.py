@@ -8,8 +8,11 @@ import cv2
 from PIL import Image
 import random
 from skimage.measure import compare_ssim
+from skimage import io
+from skimage import color
 import imutils
-from jetbot import Robot
+from scipy import stats
+# from jetbot import Robot
 
 
 
@@ -39,12 +42,11 @@ class RobotEnv(gym.Env):
 
     STRAIGHT = 0
     LEFT = 1
-    #RIGHT = 2
+    RIGHT = 2
 
     def __init__(self):
         super(RobotEnv, self).__init__()
-        #n_actions = 3
-        n_actions = 2
+        n_actions = 3
         self.action_space = spaces.Discrete(n_actions)
         self.observation_space = spaces.Box(0, 255, [224, 224, 3], dtype=np.uint8)
         self.state = None
@@ -53,7 +55,10 @@ class RobotEnv(gym.Env):
         self.speed_threshold = 10
         self.image = None
         self.prev_image = None
-        self.robot = Robot()
+        # self.robot = Robot()
+        self.epsilon = 0.3
+        self.count = 178
+        self.status = None
 
     def step(self, action):
         """
@@ -62,44 +67,51 @@ class RobotEnv(gym.Env):
         :action: TODO
         :returns: next observation, the immediate reward, if episode is done, additional info
         """
-
-        if action == self.LEFT:
-            self.robot.left()
-            # take current frame 
-            # self.image = image
-        '''
-        if action == self.RIGHT:
-            self.robot.right()
-            # take current frame
-            # self.image = image
-        '''
+        if action == self.LEFT or action == self.RIGHT:
+            self.count += 100
+            reward = 0.2
         elif action == self.STRAIGHT:
-            self.robot.straight()
-            # take current frame
-            # self.image = image
-        else:
-            raise ValueError("Received invalid action={} that is not part of the action space".format(action))
+            self.count += 5
+            reward = 10
 
-        grayA = cv2.cvtColor(self.prev_image, cv2.COLOR_BGR2GRAY)
-        grayB = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+        if self.count >= 956:
+            self.count = 178
 
-        (score, diff) = compare_ssim(grayA, grayB, full=True)
+        image = "gym_env/envs/" + str(self.count) + ".png"
+        # self.image = Image.open(image)
+        # self.image = cv2.imread(image)
+        self.image = io.imread(image)
 
-        s = self.state
-        # done = bool(self.speed < self.speed_threshold)
-        done = bool(score > 1-epsilon && score < 1+epsilon)
+        img = color.rgb2gray(self.image)
+        prev_img = color.rgb2gray(self.prev_image)
+
+        (score, diff) = compare_ssim(img, prev_img, full=True)
+
+        placeholder = self.image
+        placeholder[placeholder > 245] = 0
+        flat_non_zero = placeholder[np.nonzero(placeholder)]
+        val = stats.mode(flat_non_zero, axis=None)
+        self.image[self.image > 245] = val[0]
+        score = cv2.sumElems(self.image)
+        s = sum(list(score))
+
+
+        done = bool(s < 11800000)
 
         if not done:
-            reward = 1.0
+            self.status = "Clear"
+            # reward = 1.0
         else:
+            self.status = "Blocked"
             reward = 0.0
 
-        info = {self.image.filename:self.speed} # not required
+        info = {image:s} # not required
 
         data = np.asarray(self.image)
         self.prev_image = self.image
 
         return data.astype(np.uint8), reward, done, info
+        # return self.image, reward, done, info
 
     def reset(self):
         """ 
@@ -110,9 +122,14 @@ class RobotEnv(gym.Env):
         """
         self.reward = 0
         self.speed = 20
+        self.count = 178
 
         # reset to current frame
-        self.image = Image.open('nonobstacle.png')
+        # self.image = Image.open('0.png')
+        # self.image = cv2.imread('0.png')
+        self.image = io.imread('gym_env/envs/178.png')
+        self.prev_image = self.image
+        # return np.asarray(self.image).astype(np.uint8)
         data = np.asarray(self.image)
         return data.astype(np.uint8)
 
@@ -142,6 +159,18 @@ check_env(env, warn=True)
 print(env.observation_space)
 print(env.action_space)
 print(env.action_space.sample())
+
+# image = cv2.imread('0.png')
+# print(image)
+
+# imageA = cv2.imread("826.png")
+# imageB = cv2.imread("827.png")
+# graya = cv2.cvtColor(imageA, cv2.COLOR_BGR2GRAY)
+# grayb = cv2.cvtColor(imageB, cv2.COLOR_BGR2GRAY)
+
+# (score, diff) = compare_ssim(graya, grayb, full=True)
+# print("SSIM: {}".format(score))
+
 
 # n_steps = 20
 # for step in range(n_steps):
